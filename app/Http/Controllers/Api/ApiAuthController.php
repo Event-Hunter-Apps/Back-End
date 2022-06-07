@@ -12,15 +12,23 @@ class ApiAuthController extends Controller
 {
     public function register(Request $request) {
         $validator = $request->validate([
-            'username' => 'required|string|unique:users',
             'nama' => 'required',
             'password' => 'required|string|confirmed',
             'email' => 'required|string|email:dns|unique:users',
             'no_hp' => 'required|string|unique:users'
+        ], [
+            "unique" => "Email already used!",
+            "required" => "Please fill in all fields!",
+            "confirmed" => "Password doesn't match!"
         ]);
 
+        if ($validator->fails()) {
+            return response([
+                'message' => $validator->errors()
+            ], 400);
+        }
+
         $user = User::create([
-            'username' => $validator['username'],
             'nama' => $validator['nama'],
             'email' =>  $validator['email'],
             'password' => bcrypt($validator['password']),
@@ -46,11 +54,11 @@ class ApiAuthController extends Controller
 
     public function login(Request $request) {
         $validator = $request->validate([
-            'username' => 'required|string',
+            'email' => 'required|string',
             'password' => 'required|string',
         ]);
 
-        $user = User::where('username', $validator['username'])->first();
+        $user = User::where('email', $validator['email'])->first();
         if(!$user || !Hash::check($validator['password'], $user->password)) {
             return response([
                 "message" => "invalid username or password",

@@ -13,19 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('role_id');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->string('nama');
-            $table->char('no_hp', 14);
-            // $table->timestamp('email_verified_at')->nullable();
-            // $table->rememberToken();
+        Schema::create('orders', function (Blueprint $table) {
+            $table->unsignedBigInteger('cart_id');
+            $table->unsignedBigInteger('tiket_id');
+            $table->primary(['cart_id', 'tiket_id']);
+            $table->unsignedInteger('quantity');
             $table->timestamps();
             $table->softDeletes($column = 'deleted_at', $precision = 0);
         });
-
     }
 
     /**
@@ -35,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('orders');
     }
 };
