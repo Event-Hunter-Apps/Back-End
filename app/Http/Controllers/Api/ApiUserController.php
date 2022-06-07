@@ -4,49 +4,37 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Models\User;
 
 class ApiUserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function getAllUsers()
     {
-        //
+        $users = User::whereIn('role_id', [2,3])->get();
+        if (!$users) {
+            return response([
+                "message" => "internal server error"
+            ], 400);
+        }
+        return response([
+            "message" => "get all users success",
+            "user" => $users
+        ], 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function getUser($id)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        $user = User::find($id);
+        if (!$user) {
+            return response([
+                "message" => "internal server error"
+            ], 400);
+        }
+        return response([
+            "message" => "get user success",
+            "user" => $user
+        ], 200);
     }
 
     /**
@@ -60,16 +48,9 @@ class ApiUserController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function updateUser(Request $request, $id)
     {
-        //
+        
     }
 
     /**

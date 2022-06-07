@@ -5,7 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ApiEventController;
 use App\Http\Controllers\Api\ApiTiketController;
 use App\Http\Controllers\Api\ApiKategoriController;
+use App\Http\Controllers\Api\ApiUserController;
 use App\Http\Controllers\Api\ApiAuthController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -23,6 +25,10 @@ Route::resource('tikets', ApiTiketController::class);
 Route::resource('events', ApiEventController::class);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::prefix('users')->group(function () {
+        Route::get('', [ApiUserController::class, 'getAllUsers']);
+        Route::get('/{user_id}', [ApiUserController::class, 'getUser']);
+    });
     Route::get('/event', [ApiEventController::class, 'index']);
     Route::post('/logout', [ApiAuthController::class, 'logout']);
 });
