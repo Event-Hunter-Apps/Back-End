@@ -14,7 +14,7 @@ class ApiUserController extends Controller
         $users = User::whereIn('role_id', [2,3])->get();
         if (!$users) {
             return response([
-                "message" => "internal server error"
+                "message" => "bad request"
             ], 400);
         }
         return response([
@@ -28,7 +28,7 @@ class ApiUserController extends Controller
         $user = User::find($id);
         if (!$user) {
             return response([
-                "message" => "internal server error"
+                "message" => "bad request"
             ], 400);
         }
         return response([
@@ -37,30 +37,25 @@ class ApiUserController extends Controller
         ], 200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
     public function updateUser(Request $request, $id)
     {
+        $user = User::find($id);
+        if (!$user) {
+            return response([
+                "message" => "bad request"
+            ], 400);
+        }
+        $validator = $request->validate([
+            'nama' => 'required',
+            'no_hp' => 'required|string|unique:users,no_hp,'.$user->id.'id',
+        ], [
+            "no_hp.unique" => "Phone number already used!"
+        ]);
         
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $user->update($request->all());
+        return response([
+            "message" => "get user success",
+            "user" => $user
+        ], 200);
     }
 }
