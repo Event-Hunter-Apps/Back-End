@@ -22,15 +22,26 @@ use App\Http\Controllers\Api\ApiAuthController;
 
 Route::resource('categories', ApiKategoriController::class);
 Route::resource('tikets', ApiTiketController::class);
-Route::resource('events', ApiEventController::class);
+// Route::resource('events', ApiEventController::class);
+
+
+Route::prefix('events')->group(function () {
+    Route::get('', [ApiEventController::class, 'getAllEvents']);
+    Route::get('/{event_id}', [ApiEventController::class, 'getEvent']);
+});
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::prefix('users')->group(function () {
         Route::get('', [ApiUserController::class, 'getAllUsers']);
         Route::get('/{user_id}', [ApiUserController::class, 'getUser']);
+        Route::put('/{user_id}', [ApiUserController::class, 'updateUser']);
     });
-    Route::get('/event', [ApiEventController::class, 'index']);
     Route::post('/logout', [ApiAuthController::class, 'logout']);
+
+    Route::prefix('events')->group(function () {
+        Route::post('', [ApiEventController::class, 'createEvent']);
+        Route::put('/{event_id}', [ApiEventController::class, 'updateEvent']);
+    });
 });
 
 Route::post('/register', [ApiAuthController::class, 'register']);

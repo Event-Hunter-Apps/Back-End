@@ -8,39 +8,85 @@ use Illuminate\Http\Response;
 use App\Models\Event;
 class ApiEventController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function getAllEvents()
     {
         $events = Event::all();
+        if(!$events) {
+            return response([
+                "message"=>"bad request",
+            ], 400);
+        }
         return response([
             "message"=>"success get all events",
             "events"=>$events,
         ], 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function getEvent($id)
     {
-        //
+        $event = Event::find($id);
+        if(!$event) {
+            return response([
+                "message"=>"bad request",
+            ], 400);
+        }
+        return response([
+            "message"=>"success get all events",
+            "events"=>$event,
+        ], 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function createEvent(Request $request)
     {
-        $event = Event::create($request->all());
+        $validator = $request->validate([
+            'nama'=>'required|string',
+            'deskripsi' => 'required|string',
+            'tanggal_mulai' => 'required',
+            'tanggal_berakhir' => 'required',
+            'jam_buka' => 'required',
+            'jam_tutup' => 'required',
+            'lokasi' => 'required',
+            'kota' => 'required',
+            'harga' => 'required|integer',
+            'image_upload' => 'image|mimes:jpeg,jpg,png|max:2048',
+        ]);
+
+        $filename = '';
+        if($request->hasFile('image_upload')) {
+            $image = $request->file('image_upload'); //image file from frontend
+            $firebase_storage_path = 'Events/';
+            $localfolder = public_path('firebase') .'/';
+            $extension = $image->getClientOriginalExtension();
+            $file      = time(). '.' . $extension;
+            $filename = $firebase_storage_path . $file;
+            if ($image->move($localfolder, $file)) {
+                try {
+                    $uploadedfile = fopen($localfolder.$file, 'r');
+                    app('firebase.storage')->getBucket()->upload($uploadedfile, ['name' => $firebase_storage_path . $file]);
+                    unlink($localfolder . $file);
+                } catch (exception $e) {
+                    return response([
+                        "message"=>"success create event",
+                        "event" => $e,
+                    ], 200);
+                }
+            }   
+        }
+
+        $event = Event::create([
+            'user_id'=> auth()->user()->id,
+            'nama'=> $validator['nama'],
+            'deskripsi' => $validator['deskripsi'],
+            'tanggal_mulai' => $validator['tanggal_mulai'],
+            'tanggal_berakhir' => $validator['tanggal_berakhir'],
+            'jam_buka' => $validator['jam_buka'],
+            'jam_tutup' => $validator['jam_tutup'],
+            'lokasi' => $validator['lokasi'],
+            'kota' => $validator['kota'],
+            'harga' => $validator['harga'],
+            'image' => $filename
+        ]);
+
         return response([
             "message"=>"success create event",
             "event" => $event,
