@@ -98,7 +98,7 @@ class ApiKategoriController extends Controller
      */
     public function destroy($id)
     {
-        $response = Kategori::find( $id );
+        $response = Kategori::find($id);
         $response->delete();
         return [
             "message"=>"success delete category",

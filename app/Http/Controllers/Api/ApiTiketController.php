@@ -4,105 +4,97 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Models\Tiket;
+use App\Models\Event;
 class ApiTiketController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function getAllTickets($id)
     {
-        $response = Tiket::all();
-        return [
+        $event = Event::find($id);
+        if (!$event) {
+            return response([
+                "message" => "event not found!"
+            ], 400);
+        }
+        $tickets = Tiket::with(['kategori'])->where('event_id','=',$id)->get();
+        if (!$tickets) {
+            return response([
+                "message" => "ticket not found!"
+            ], 400);
+        }
+        return response([
             "message"=>"success get all tikets",
-            "tikets"=>$response,
-        ];
+            "event"=>$event,
+            "tikets"=>$tickets,
+        ], 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function getTicket($id)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $response = Tiket::create($request->all());
-        return [
-            "message"=>"success create tiket",
-            "tiket"=>$response,
-        ];
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $response = Tiket::find($id);
+        $ticket = Tiket::with(['kategori', 'event'])->find($id);
+        if (!$ticket) {
+            return response([
+                "message" => "ticket not found!"
+            ], 400);
+        }
         return [
             "message"=>"sucess get tiket",
-            "tiket"=>$response,
+            "tiket"=>$ticket
         ];
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+    // public function createTicket(Request $request, $id)
+    // {
+    //     $validator = $request->validate([
+    //         "kategori_id" => 'required',
+    //         "nama" => 'required', 
+    //         "deskripsi" => 'required',
+    //         "harga" => 'required|integer'
+    //     ]);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $response = Tiket::find($id);
+    //     $ticket = Tiket::Create([
+    //         'event_id' => $eid,
+    //         'kategori_id' => $validator['kategori'],
+    //         'nama' => $validator['nama'],
+    //         'deskripsi' => $validator['deskripsi'],
+    //         'harga' => $validator['harga']
+    //     ]);
+    //     return [
+    //         "message"=>"success create tiket",
+    //         "tiket"=>$ticket,
+    //     ];
+    // }
 
-        $response->update($request->all());
-        return [
-            "message"=>"success update tiket",
-            "tiket"=> $response,
-        ];
-    }
+    // public function update(Request $request, $id)
+    // {
+    //     $ticket = Tiket::find($id);
+    //     if (!$tickets) {
+    //         return response([
+    //             "message" => "ticket not found!"
+    //         ], 400);
+    //     }
+    //     $validator = $request->validate([
+    //         "kategori_id" => 'required',
+    //         "nama" => 'required', 
+    //         "deskripsi" => 'required',
+    //         "harga" => 'required|integer'
+    //     ]);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $response = Tiket::find( $id );
-        $response->delete();
-        return [
-            "message"=>"success delete tiket",
-            "tiket"=>$response,
-        ];
-    }
+    //     $ticket->update($request->all());
+    //     return [
+    //         "message"=>"success update tiket",
+    //         "tiket"=> $ticket,
+    //     ];
+    // }
+
+    // public function destroy($id)
+    // {
+    //     $response = Tiket::find( $id );
+    //     $response->delete();
+    //     return [
+    //         "message"=>"success delete tiket",
+    //         "tiket"=>$response,
+    //     ];
+    // }
 }
