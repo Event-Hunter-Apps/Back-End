@@ -4,82 +4,88 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use Illuminate\Http\Response;
+use App\Models\Checkout;
+use Illuminate\Support\Facades\Auth;
 class ApiCheckoutController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function getAllCheckouts()
     {
-        //
+        $checkouts = Checkout::with('user')->where('user_id','=',Auth::user()->id)->get();
+        if (!$checkouts) {
+            return response([
+                "message" => "checkout not found!"
+            ], 200);
+        }
+
+        return response([
+            "message" => "success get all checkouts",
+            "checkouts" => $checkouts,
+        ], 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function getCheckout($id)
     {
-        //
+        $checkout = Checkout::find($id);
+        if (!$checkout) {
+            return response([
+                "message" => "checkout not found!"
+            ], 200);
+        }
+        if ($checkout->user_id != Auth::user()->role_id) {
+            return response([
+                "message" => "Forbidden"
+            ], 403);
+        }
+
+        return response([
+            "message" => "success get checkout",
+            "checkout" => $checkout
+        ], 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function createCheckout()
     {
-        //
+        $checkout = Checkout::Create([
+            'user_id' => Auth::user()->role_id,
+            'tanggal_checkout' => date("Y-m-d"),
+            'status' => "Menunggu Pembayaran",
+            'total_harga' => 0,
+            'paid_at' => null
+        ]);
+
+        return response([
+            "message" => "success create checkout",
+            "checkout" => $checkout
+        ], 200);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function payCheckout($id)
     {
-        //
-    }
+        $checkout = Checkout::find($id);
+        if (!$checkout) {
+            return response([
+                "message" => "checkout not found!"
+            ], 200);
+        }
+        if ($checkout->user_id != Auth::user()->role_id) {
+            return response([
+                "message" => "Forbidden"
+            ], 403);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+        $validator = $request->validate([
+            "total_harga" => 'required|integer',
+        ]);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+        
+        $checkout = Checkout::Create([
+            'total_harga' => 0,
+        ]);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return response([
+            "message" => "success create checkout",
+            "checkout" => $checkout
+        ], 200);
     }
 }
