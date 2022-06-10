@@ -32,7 +32,7 @@ class ApiCheckoutController extends Controller
                 "message" => "checkout not found!"
             ], 200);
         }
-        if ($checkout->user_id != Auth::user()->role_id) {
+        if ($checkout->user_id != Auth::user()->id) {
             return response([
                 "message" => "Forbidden"
             ], 403);
@@ -47,7 +47,7 @@ class ApiCheckoutController extends Controller
     public function createCheckout()
     {
         $checkout = Checkout::Create([
-            'user_id' => Auth::user()->role_id,
+            'user_id' => Auth::user()->id,
             'tanggal_checkout' => date("Y-m-d"),
             'status' => "Menunggu Pembayaran",
             'total_harga' => 0,
@@ -60,7 +60,7 @@ class ApiCheckoutController extends Controller
         ], 200);
     }
 
-    public function payCheckout($id)
+    public function updateCheckout($id)
     {
         $checkout = Checkout::find($id);
         if (!$checkout) {
@@ -73,18 +73,19 @@ class ApiCheckoutController extends Controller
                 "message" => "Forbidden"
             ], 403);
         }
-
-        $validator = $request->validate([
-            "total_harga" => 'required|integer',
-        ]);
-
         
-        $checkout = Checkout::Create([
-            'total_harga' => 0,
+        $validator = $request->validate([
+            'total_harga' => 'required|integer',
+            'status' => 'required|string'
         ]);
+
+        $orders = 
+
+        $checkout->total_harga = $request->total_harga;
+        $checkout->status = $request->status;
 
         return response([
-            "message" => "success create checkout",
+            "message" => "success update checkout",
             "checkout" => $checkout
         ], 200);
     }

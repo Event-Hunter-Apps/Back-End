@@ -13,10 +13,10 @@ class Tiket extends Model
 {
     use HasFactory, softDeletes;
     protected $table = "tikets";
-    protected $attributes = [
-        'deskripsi'=>'lorem ipsum',
-        'harga'=>200000,
-    ];
+    // protected $attributes = [
+    //     'deskripsi'=>'lorem ipsum',
+    //     'harga'=>200000,
+    // ];
     protected $fillable = [
         'event_id',
         'kategori_id',
