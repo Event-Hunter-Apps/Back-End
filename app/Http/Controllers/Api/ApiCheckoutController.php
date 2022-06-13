@@ -75,14 +75,17 @@ class ApiCheckoutController extends Controller
         }
         
         $validator = $request->validate([
-            'total_harga' => 'required|integer',
-            'status' => 'required|string'
+            'status' => 'required|integer',
+            'paid_at' => 'required|string'
         ]);
 
-        $orders = 
-
-        $checkout->total_harga = $request->total_harga;
         $checkout->status = $request->status;
+
+        if ($request->status == "Pembayaran Sukses") {
+            $checkout->paid_at = date("Y-m-d");
+        }
+        
+        $checkout->save();
 
         return response([
             "message" => "success update checkout",
