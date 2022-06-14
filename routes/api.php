@@ -41,7 +41,9 @@ Route::prefix('tickets')->group(function () {
 });
 
 
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get("my-profile",  [ApiUserController::class, 'getUserByToken']);
     Route::prefix('users')->group(function () {
         Route::get('/', [ApiUserController::class, 'getAllUsers']);
         Route::get('/{user_id}', [ApiUserController::class, 'getUser']);
