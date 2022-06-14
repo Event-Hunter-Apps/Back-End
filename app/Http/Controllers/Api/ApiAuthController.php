@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class ApiAuthController extends Controller
 {
@@ -15,41 +16,29 @@ class ApiAuthController extends Controller
             'nama' => 'required',
             'password' => 'required|string|confirmed',
             'email' => 'required|string|email:dns|unique:users',
-            'no_hp' => 'required|string|unique:users'
+            'no_hp' => 'required|string|unique:users',
+            'role_id' => 'required'
         ], [
-            "unique" => "Email already used!",
-            "required" => "Please fill in all fields!",
-            "confirmed" => "Password doesn't match!"
+            "no_hp.unique" => "Phone number already used!",
         ]);
 
-        if ($validator->fails()) {
-            return response([
-                'message' => $validator->errors()
-            ], 400);
-        }
-
-        $user = User::create([
-            'nama' => $validator['nama'],
-            'email' =>  $validator['email'],
-            'password' => bcrypt($validator['password']),
-            'role_id' => 1,
-            'no_hp' => $validator['no_hp']
-        ]);
-
+        $request['password'] = bcrypt($request['password']);
+        $user = User::create($request->all());
         $token = $user->createToken('secret_key')->plainTextToken;
-        $response = [
+
+        return response([
+            'message' => 'register success',
             'user' => $user,
             'token' => $token,
-        ];
-
-        return response($response, 200);
+        ], 200);
     }
 
     public function logout(Request $request) {
         $request->user()->currentAccessToken()->delete();
 
-        $response = ["message"=> "Logged Out"];
-        return response($response, 200);
+        return response([
+            "message"=> "log out success"
+        ], 200);
     }
 
     public function login(Request $request) {
@@ -58,8 +47,8 @@ class ApiAuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        $user = User::where('email', $validator['email'])->first();
-        if(!$user || !Hash::check($validator['password'], $user->password)) {
+        $user = User::where('email', $request['email'])->first();
+        if(!$user || !Hash::check($request['password'], $user->password)) {
             return response([
                 "message" => "invalid username or password",
             ], 400);
@@ -67,7 +56,8 @@ class ApiAuthController extends Controller
         
         $token = $user->createToken('secret_key')->plainTextToken;
         $response = [
-            'user' => $user,
+            "message" => "login success",
+            "user" => $user,
             'token' => $token,
         ];
 

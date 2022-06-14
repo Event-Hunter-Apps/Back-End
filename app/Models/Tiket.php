@@ -7,15 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes; 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use App\Models\Kategori;
+use App\Models\Event;
 
 class Tiket extends Model
 {
     use HasFactory, softDeletes;
     protected $table = "tikets";
-    protected $attributes = [
-        'deskripsi'=>'lorem ipsum',
-        'harga'=>200000,
-    ];
+    // protected $attributes = [
+    //     'deskripsi'=>'lorem ipsum',
+    //     'harga'=>200000,
+    // ];
     protected $fillable = [
         'event_id',
         'kategori_id',
@@ -32,5 +33,9 @@ class Tiket extends Model
 
     public function kategori() {
         return $this->belongsTo(Kategori::class);
+    }
+
+    public function event() {
+        return $this->belongsTo(Event::class);
     }
 }
