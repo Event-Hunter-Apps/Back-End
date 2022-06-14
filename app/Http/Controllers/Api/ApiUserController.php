@@ -37,6 +37,20 @@ class ApiUserController extends Controller
         ], 200);
     }
 
+    public function getUserByToken()
+    {
+        $user = User::find(auth()->user()->id);
+        if (!$user) {
+            return response([
+                "message" => "bad request"
+            ], 400);
+        }
+        return response([
+            "message" => "get user success",
+            "user" => $user
+        ], 200);
+    }
+
     public function updateUser(Request $request, $id)
     {
         $user = User::find($id);
