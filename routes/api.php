@@ -47,7 +47,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/{user_id}', [ApiUserController::class, 'getUser']);
         Route::put('/{user_id}', [ApiUserController::class, 'updateUser']);
     });
-    Route::post('/logout', [ApiAuthController::class, 'logout']);
+    Route::get('/logout', [ApiAuthController::class, 'logout']);
 
     Route::prefix('events')->group(function () {
         Route::post('/', [ApiEventController::class, 'createEvent']);
