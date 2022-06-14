@@ -57,6 +57,7 @@ class ApiAuthController extends Controller
         $token = $user->createToken('secret_key')->plainTextToken;
         $response = [
             "message" => "login success",
+            "user" => $user,
             'token' => $token,
         ];
 
