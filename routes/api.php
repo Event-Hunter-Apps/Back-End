@@ -44,10 +44,12 @@ Route::prefix('tickets')->group(function () {
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get("my-profile",  [ApiUserController::class, 'getUserByToken']);
+    Route::put('update-user-active', [ApiUserController::class, 'updateUserActive']);
     Route::prefix('users')->group(function () {
         Route::get('/', [ApiUserController::class, 'getAllUsers']);
         Route::get('/{user_id}', [ApiUserController::class, 'getUser']);
         Route::put('/{user_id}', [ApiUserController::class, 'updateUser']);
+        
     });
     Route::get('/logout', [ApiAuthController::class, 'logout']);
 

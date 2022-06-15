@@ -72,4 +72,26 @@ class ApiUserController extends Controller
             "user" => $user
         ], 200);
     }
+
+    public function updateUserActive(Request $request)
+    {
+        $user = User::find(auth()->user()->id);
+        if (!$user) {
+            return response([
+                "message" => "bad request"
+            ], 400);
+        }
+        $validator = $request->validate([
+            'nama' => 'required',
+            'no_hp' => 'required|string|unique:users,no_hp,'.$user->id.'id',
+        ], [
+            "no_hp.unique" => "Phone number already used!"
+        ]);
+        
+        $user->update($request->all());
+        return response([
+            "message" => "get user success",
+            "user" => $user
+        ], 200);
+    }
 }
