@@ -50,24 +50,4 @@ class Event extends Model
             return $query->where('kota', 'like', '%'.$kota.'%');
         });
     }
-
-    public function imageUrl(): Attribute {
-        return new Attribute( get: function( $value ){
-            $expiresAt = new \DateTime('tomorrow');
-            $imageReference = app('firebase.storage')->getBucket()->object( $this->image);
-    
-            if ($imageReference->exists()) {
-                $image = $imageReference->signedUrl($expiresAt);
-            } else {
-                $image = null;
-            }
-            return $image;
-        });
-    }
-
-    public function idrPrice(): Attribute {
-        return new Attribute( get: function() {
-            return number_format($this->harga, 0, ',', '.' );
-        });
-    }
 }

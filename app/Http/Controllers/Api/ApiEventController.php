@@ -10,7 +10,7 @@ class ApiEventController extends Controller
 {
     public function getAllEvents()
     {
-        $events = Event::all();
+        $events = Event::latest()->filter(request(['nama', 'kota']))->get();;
         if(!$events) {
             return response([
                 "message"=>"bad request",
