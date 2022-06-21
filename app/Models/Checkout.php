@@ -21,6 +21,10 @@ class Checkout extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function order() {
+        return $this->hasMany(Order::class);
+    }
+
     public function idrPrice(): Attribute {
         return new Attribute( get: function() {
             return number_format($this->total_harga, 0, ',', '.' );

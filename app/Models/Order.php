@@ -12,7 +12,7 @@ class Order extends Model
     use HasFactory;
     protected $fillable = [
         'quantity',
-        'cart_id',
+        'checkout_id',
         'tiket_id',
     ];
     public function checkout() {

@@ -6,21 +6,18 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Checkout;
+use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 class ApiCheckoutController extends Controller
 {
     public function getAllCheckouts()
     {
-        $checkouts = Checkout::with('user')->where('user_id','=',Auth::user()->id)->get();
-        if (!$checkouts) {
-            return response([
-                "message" => "checkout not found!"
-            ], 200);
-        }
-
+        $checkouts = Checkout::where('user_id', Auth::user()->id)->get();
+  
         return response([
-            "message" => "success get all checkouts",
-            "checkouts" => $checkouts,
+            "message" => "success get all orders",
+            "checkout" => $checkouts,
+            // "orders" => $orders
         ], 200);
     }
 

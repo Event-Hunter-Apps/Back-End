@@ -27,7 +27,7 @@ class ApiOrderController extends Controller
             ], 403);
         }
 
-        $orders = Order::with(['tiket'])->where('cart_id', '=', $cid)->get();
+        $orders = Order::with(['checkout','tiket'])->where('checkout_id', '=', $cid)->get();
         if (!$orders) {
             return response([
                 "message" => "orders not found!",
@@ -76,7 +76,7 @@ class ApiOrderController extends Controller
             $tiket = Tiket::find($order["ticket_id"]);
             $tickets = array_merge($tickets, [$tiket]);
             $order = Order::Create([
-                'cart_id' => $checkout->id,
+                'checkout_id' => $checkout->id,
                 'tiket_id' => $tiket->id,
                 'quantity' => $order["quantity"],
             ]);

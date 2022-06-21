@@ -106,27 +106,27 @@ class DatabaseSeeder extends Seeder
 
         Checkout::insert(
             array(
-                array('user_id' => 3, 'tanggal_checkout' => "2022-04-27", 'status' => "Pending", 'total_harga' => 50000, 'paid_at' => null),
-                array('user_id' => 3, 'tanggal_checkout' => "2022-04-27", 'status' => "Pending", 'total_harga' => 50000, 'paid_at' => null),
-                array('user_id' => 4, 'tanggal_checkout' => "2022-04-27", 'status' => "Cancel", 'total_harga' => 20000, 'paid_at' => null),
-                array('user_id' => 5, 'tanggal_checkout' => "2022-04-17", 'status' => "Complete", 'total_harga' => 35000, 'paid_at' => '2022-04-15'),
-                array('user_id' => 4, 'tanggal_checkout' => "2022-04-17", 'status' => "Complete", 'total_harga' => 50000, 'paid_at' => '2022-04-15'),
-                array('user_id' => 5, 'tanggal_checkout' => "2022-04-17", 'status' => "Complete", 'total_harga' => 60000, 'paid_at' => '2022-04-15'),
+                array('user_id' => 3, 'tanggal_checkout' => "2022-04-27", 'status' => "Pending", 'total_harga' => 50000, 'paid_at' => null, "created_at" => date("Y-m-d"), "updated_at" => date("Y-m-d")),
+                array('user_id' => 3, 'tanggal_checkout' => "2022-04-27", 'status' => "Pending", 'total_harga' => 50000, 'paid_at' => date("Y-m-d"), "created_at" => date("Y-m-d"), "updated_at" => date("Y-m-d")),
+                array('user_id' => 4, 'tanggal_checkout' => "2022-04-27", 'status' => "Cancel", 'total_harga' => 20000, 'paid_at' => null, "created_at" => date("Y-m-d"), "updated_at" => date("Y-m-d")),
+                array('user_id' => 5, 'tanggal_checkout' => "2022-04-17", 'status' => "Complete", 'total_harga' => 35000, 'paid_at' => date("Y-m-d"), "created_at" => date("Y-m-d"), "updated_at" => date("Y-m-d")),
+                array('user_id' => 4, 'tanggal_checkout' => "2022-04-17", 'status' => "Complete", 'total_harga' => 50000, 'paid_at' => date("Y-m-d"), "created_at" => date("Y-m-d"), "updated_at" => date("Y-m-d")),
+                array('user_id' => 5, 'tanggal_checkout' => "2022-04-17", 'status' => "Complete", 'total_harga' => 60000, 'paid_at' => date("Y-m-d"), "created_at" => date("Y-m-d"), "updated_at" => date("Y-m-d")),
             )
         );
         Order::insert(
             array(
-                array('cart_id' => 1, "tiket_id" => 1, "quantity" => 3),
-                array('cart_id' => 2, "tiket_id" => 3, "quantity" => 1),
-                array('cart_id' => 3, "tiket_id" => 2, "quantity" => 2),
-                array('cart_id' => 4, "tiket_id" => 6, "quantity" => 1),
-                array('cart_id' => 5, "tiket_id" => 11, "quantity" => 4),
+                array('checkout_id' => 1, "tiket_id" => 1, "quantity" => 3),
+                array('checkout_id' => 2, "tiket_id" => 3, "quantity" => 1),
+                array('checkout_id' => 3, "tiket_id" => 2, "quantity" => 2),
+                array('checkout_id' => 4, "tiket_id" => 6, "quantity" => 1),
+                array('checkout_id' => 5, "tiket_id" => 11, "quantity" => 4),
 
-                array('cart_id' => 1, "tiket_id" => 20, "quantity" => 1),
-                array('cart_id' => 1, "tiket_id" => 16, "quantity" => 1),
-                array('cart_id' => 3, "tiket_id" => 12, "quantity" => 4),
-                array('cart_id' => 3, "tiket_id" => 8, "quantity" => 2),
-                array('cart_id' => 3, "tiket_id" => 4, "quantity" => 5),
+                array('checkout_id' => 1, "tiket_id" => 20, "quantity" => 1),
+                array('checkout_id' => 1, "tiket_id" => 16, "quantity" => 1),
+                array('checkout_id' => 3, "tiket_id" => 12, "quantity" => 4),
+                array('checkout_id' => 3, "tiket_id" => 8, "quantity" => 2),
+                array('checkout_id' => 3, "tiket_id" => 4, "quantity" => 5),
             )
         );
     }

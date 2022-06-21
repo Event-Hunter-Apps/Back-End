@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->foreign('cart_id')->references('id')->on('checkouts')->onDelete('cascade');
+            $table->foreign('checkout_id')->references('id')->on('checkouts')->onDelete('cascade');
             $table->foreign('tiket_id')->references('id')->on('tikets')->onDelete('cascade');
         });
     }

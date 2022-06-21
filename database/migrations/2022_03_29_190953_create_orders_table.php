@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->unsignedBigInteger('cart_id');
+            $table->unsignedBigInteger('checkout_id');
             $table->unsignedBigInteger('tiket_id');
-            $table->primary(['cart_id', 'tiket_id']);
+            $table->primary(['checkout_id', 'tiket_id']);
             $table->unsignedInteger('quantity');
             $table->timestamps();
             $table->softDeletes($column = 'deleted_at', $precision = 0);

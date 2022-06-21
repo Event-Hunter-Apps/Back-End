@@ -37,8 +37,6 @@ class Event extends Model
     ];
 
     public function scopeFilter($query, array $filters) {
-        
-       
         $query->when($filters['nama'] ?? false, function($query, $nama) {
             return $query->where('nama', 'like', '%'.$nama.'%');
         });
