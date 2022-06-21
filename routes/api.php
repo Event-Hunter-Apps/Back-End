@@ -20,12 +20,8 @@ use App\Http\Controllers\Api\ApiOrderController;
 |
 */
 
-
-// Route::resource('categories', ApiKategoriController::class);
-// Route::resource('tikets', ApiTiketController::class);
-// Route::resource('events', ApiEventController::class);
-
 Route::prefix('events')->group(function () {
+    Route::get('/trending', [ApiEventController::class, 'getAllEventsTrending']);
     Route::get('', [ApiEventController::class, 'getAllEvents']);
     Route::get('/{event_id}', [ApiEventController::class, 'getEvent']);
 
@@ -46,6 +42,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get("my-profile",  [ApiUserController::class, 'getUserByToken']);
     Route::put('update-user-active', [ApiUserController::class, 'updateUserActive']);
     Route::prefix('users')->group(function () {
+        Route::put('/change-password', [ApiUserController::class, 'updatePassword']);
         Route::get('/', [ApiUserController::class, 'getAllUsers']);
         Route::get('/{user_id}', [ApiUserController::class, 'getUser']);
         Route::put('/{user_id}', [ApiUserController::class, 'updateUser']);
@@ -55,12 +52,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::prefix('events')->group(function () {
         Route::post('/', [ApiEventController::class, 'createEvent']);
+        
         Route::put('/{event_id}', [ApiEventController::class, 'updateEvent']);
         Route::delete('/{event_id}', [ApiEventController::class, 'deleteEvent']);
     });
 
     Route::prefix('checkouts')->group(function () {
         Route::get('/', [ApiCheckoutController::class, 'getAllCheckouts']);
+        
         Route::post('/', [ApiCheckoutController::class, 'createCheckout']);
         Route::get('/{checkout_id}', [ApiCheckoutController::class, 'getCheckout']);
         Route::put('/{checkout_id}', [ApiCheckoutController::class, 'updateCheckout']);

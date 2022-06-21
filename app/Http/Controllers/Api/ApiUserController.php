@@ -94,4 +94,26 @@ class ApiUserController extends Controller
             "user" => $user
         ], 200);
     }
+
+    public function updatePassword(Request $request)
+    {
+        $user = User::find(auth()->user()->id);
+    
+        if (!$user) {
+            return response([
+                "message" => "bad request"
+            ], 400);
+        }
+        $validator = $request->validate([
+            'password' => 'required',
+        ], [
+            "password" => "password must be filled!"
+        ]);
+        $request['password'] = bcrypt($request['password']);
+        $user->update($request->all());
+        return response([
+            "message" => "get user success",
+            "user" => $user
+        ], 200);
+    }
 }

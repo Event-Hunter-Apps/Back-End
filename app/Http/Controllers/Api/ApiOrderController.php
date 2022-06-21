@@ -63,7 +63,7 @@ class ApiOrderController extends Controller
         $checkout = Checkout::Create([
             'user_id' => Auth::user()->id,
             'tanggal_checkout' => date("Y-m-d"),
-            'status' => "Menunggu Pembayaran",
+            'status' => "Pending",
             'total_harga' => 0,
             'paid_at' => null
         ]);

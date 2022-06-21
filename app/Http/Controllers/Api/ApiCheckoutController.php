@@ -17,6 +17,7 @@ class ApiCheckoutController extends Controller
         return response([
             "message" => "success get all orders",
             "checkout" => $checkouts,
+            "user" => Auth::user()->nama,
             // "orders" => $orders
         ], 200);
     }
@@ -46,7 +47,7 @@ class ApiCheckoutController extends Controller
         $checkout = Checkout::Create([
             'user_id' => Auth::user()->id,
             'tanggal_checkout' => date("Y-m-d"),
-            'status' => "Menunggu Pembayaran",
+            'status' => "Pending",
             'total_harga' => 0,
             'paid_at' => null
         ]);
