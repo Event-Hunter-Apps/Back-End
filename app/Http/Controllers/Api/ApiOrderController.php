@@ -41,24 +41,6 @@ class ApiOrderController extends Controller
         ], 200);
     }
 
-    // public function getOrder($id) {
-    //     $order = Order::with('checkout')->where($id);
-    //     if (!$order) {
-    //         return response([
-    //             "message" => "order not found!",
-    //         ], 400);
-    //     }
-    //     if ($cid->checkout->user_id != Auth::user()->id) {
-    //         return response([
-    //             "message" => "Forbidden!",
-    //         ], 403);
-    //     }
-    //     return response([
-    //         "message" => "success get order",
-    //         "order" => $order
-    //     ], 200);
-    // }
-
     public function createOrder(Request $request) {
         $checkout = Checkout::Create([
             'user_id' => Auth::user()->id,
