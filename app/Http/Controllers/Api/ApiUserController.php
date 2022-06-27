@@ -11,6 +11,11 @@ class ApiUserController extends Controller
 {
     public function getAllUsers()
     {
+        if (auth()->user()->role_id != 1) {
+            return response([
+                "message" => "Unauthorize"
+            ], 403);
+        }
         $users = User::whereIn('role_id', [2,3])->get();
         if (!$users) {
             return response([
@@ -25,6 +30,11 @@ class ApiUserController extends Controller
 
     public function getUser($id)
     {
+        if (auth()->user()->role_id != 1) {
+            return response([
+                "message" => "Unauthorize"
+            ], 403);
+        }
         $user = User::find($id);
         if (!$user) {
             return response([
@@ -53,6 +63,11 @@ class ApiUserController extends Controller
 
     public function updateUser(Request $request, $id)
     {
+        if (auth()->user()->role_id != 1) {
+            return response([
+                "message" => "Unauthorize"
+            ], 403);
+        }
         $user = User::find($id);
         if (!$user) {
             return response([
