@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class ApiTiketTest extends TestCase
 {
@@ -11,8 +11,19 @@ class ApiTiketTest extends TestCase
      *
      * @return void
      */
-    public function test_example()
-    {
-        $this->assertTrue(true);
+    
+    public function test_getAllTickets_positive() {
+
+        $response = $this->getJson('/api/events/1/tickets');
+        
+        $response
+            ->assertStatus(200);
+    }
+    public function test_getAllTickets_negative() {
+
+        $response = $this->getJson('/api/events/1000000/tickets');
+        
+        $response
+            ->assertStatus(400);
     }
 }
