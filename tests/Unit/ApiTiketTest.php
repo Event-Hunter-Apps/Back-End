@@ -26,4 +26,20 @@ class ApiTiketTest extends TestCase
         $response
             ->assertStatus(400);
     }
+
+    public function test_getTicket_positive() {
+
+        $response = $this->getJson('/api/tickets/1');
+        
+        $response
+            ->assertStatus(200);
+    }
+
+    public function test_getTicket_negative() {
+
+        $response = $this->getJson('/api/tickets/100000');
+        
+        $response
+            ->assertStatus(400);
+    }
 }
