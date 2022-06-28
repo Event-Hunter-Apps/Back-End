@@ -107,7 +107,7 @@ class DatabaseSeeder extends Seeder
         Checkout::insert(
             array(
                 array('user_id' => 3, 'tanggal_checkout' => "2022-04-27", 'status' => "Pending", 'total_harga' => 50000, 'paid_at' => null, "created_at" => date("Y-m-d"), "updated_at" => date("Y-m-d")),
-                array('user_id' => 3, 'tanggal_checkout' => "2022-04-27", 'status' => "Pending", 'total_harga' => 50000, 'paid_at' => date("Y-m-d"), "created_at" => date("Y-m-d"), "updated_at" => date("Y-m-d")),
+                array('user_id' => 3, 'tanggal_checkout' => "2022-04-27", 'status' => "Pending", 'total_harga' => 50000, 'paid_at' => null, "created_at" => date("Y-m-d"), "updated_at" => date("Y-m-d")),
                 array('user_id' => 4, 'tanggal_checkout' => "2022-04-27", 'status' => "Cancel", 'total_harga' => 20000, 'paid_at' => null, "created_at" => date("Y-m-d"), "updated_at" => date("Y-m-d")),
                 array('user_id' => 5, 'tanggal_checkout' => "2022-04-17", 'status' => "Complete", 'total_harga' => 35000, 'paid_at' => date("Y-m-d"), "created_at" => date("Y-m-d"), "updated_at" => date("Y-m-d")),
                 array('user_id' => 4, 'tanggal_checkout' => "2022-04-17", 'status' => "Complete", 'total_harga' => 50000, 'paid_at' => date("Y-m-d"), "created_at" => date("Y-m-d"), "updated_at" => date("Y-m-d")),

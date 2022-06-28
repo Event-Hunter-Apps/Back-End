@@ -18,6 +18,7 @@ class ApiEventController extends Controller
 
         // dd($nama);
         $events = DB::table('events')
+        ->where('deleted_at', '=', null)
         ->where('nama', 'LIKE', '%'.$nama.'%')
         ->where('kota', 'LIKE', '%'.$kota.'%')
         ->get();
@@ -43,6 +44,7 @@ class ApiEventController extends Controller
 
         // dd($nama);
         $events = DB::table('events')
+        ->where('deleted_at', '=', null)
         ->where('nama', 'LIKE', '%'.$nama.'%')
         ->where('kota', 'LIKE', '%'.$kota.'%')
         ->orderByDesc('events.created_at')
